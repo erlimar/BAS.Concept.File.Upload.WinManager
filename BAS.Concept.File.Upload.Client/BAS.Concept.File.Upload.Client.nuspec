@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>BAS.Concept.File.Upload.Client</id>
+    <version>1.0.0</version>
+    <title>BAS.Concept.File.Upload.Client</title>
+    <authors>Erlimar Silva Campos</authors>
+    <owners>Erlimar Silva Campos</owners>
+    <licenseUrl>https://raw.githubusercontent.com/erlimar/BAS.Concept.File.Upload.WinManager/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/erlimar/BAS.Concept.File.Upload.WinManager</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Prova de conceito para API de upload de arquivos para BAS (Win32 Client)</description>
+    <releaseNotes>Prova de conceito</releaseNotes>
+    <copyright>Copyright (C) 2018</copyright>
+    <tags>BAS E5R concept upload api</tags>
+	<dependencies>
+      <dependency id="Newtonsoft.Json" version="11.0.2" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\README.md" target="" />
+    <file src="bin\Release\BAS.Concept.File.Upload.Client.dll" target="lib\net46\BAS.Concept.File.Upload.Client.dll" />
+  </files>
+</package>

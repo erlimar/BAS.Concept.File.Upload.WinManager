@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("BAS.Concept.File.Upload.Client")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Prova de conceito para API de upload de arquivos para BAS (Win32 Client)")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("BAS")]
 [assembly: AssemblyProduct("BAS.Concept.File.Upload.Client")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright (C) 2018")]
+[assembly: AssemblyTrademark("BAS E5R")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
