@@ -22,7 +22,7 @@ namespace BAS.Concept.File.Upload.Win32Manager
 #if DEBUG
                 new ClientOptions
                 {
-                    Url = "http://localhost:3000"
+                    Url = "https://bas-concept-file-upload-api.herokuapp.com"
                 }
 #endif
             );
@@ -35,10 +35,28 @@ namespace BAS.Concept.File.Upload.Win32Manager
             lblFileDetailId.Text = "";
             lblFileDetailName.Text = "";
             lblFileDetailMime.Text = "";
+            progressBar1.Visible = false;
+
+            HabilitaBotaoDownload();
+        }
+
+        private void HabilitaBotaoDownload(bool habilita = false)
+        {
+            if (lblFileDetailId.Text == "")
+            {
+                btnDownload.Enabled = false;
+            }
+            else
+            {
+                btnDownload.Enabled = habilita;
+            }
         }
 
         private void HabilitaDesabilitaTela(bool habilita = true)
         {
+            HabilitaBotaoDownload(habilita);
+            progressBar1.Visible = !habilita;
+
             btnEnviarArquivo.Enabled = habilita;
             btnListarArquivos.Enabled = habilita;
             dataGridView1.Enabled = habilita;
@@ -82,6 +100,11 @@ namespace BAS.Concept.File.Upload.Win32Manager
         }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            SelecionaArquivo();
+        }
+
+        private void SelecionaArquivo()
         {
             try
             {
@@ -136,6 +159,45 @@ namespace BAS.Concept.File.Upload.Win32Manager
                     }
 
                     Atualizalista();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                HabilitaDesabilitaTela();
+            }
+        }
+
+        private void btnDownload_Click(object sender, EventArgs e)
+        {
+            DownloadArquivo();
+        }
+
+        private void DownloadArquivo()
+        {
+            try
+            {
+                var fileId = lblFileDetailId.Text;
+                var fileName = lblFileDetailName.Text;
+                var fileExt = $"*{Path.GetExtension(fileName)}";
+
+                saveFileDialog1.Filter = $"Arquivos {fileExt}|{fileExt}";
+                saveFileDialog1.FileName = fileName;
+
+                var dResult = saveFileDialog1.ShowDialog(this);
+
+                if (dResult == DialogResult.OK)
+                {
+                    HabilitaDesabilitaTela(false);
+
+                    using (var webStream = _client.GetFileContent(fileId))
+                    using (var fileStream = new FileStream(saveFileDialog1.FileName, FileMode.Create))
+                    {
+                        webStream.CopyTo(fileStream);
+                    }
                 }
             }
             catch (Exception ex)

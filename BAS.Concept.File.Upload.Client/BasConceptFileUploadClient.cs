@@ -111,7 +111,24 @@ namespace BAS.Concept.File.Upload.Client
 
         public Stream GetFileContent(string fileId)
         {
-            throw new NotImplementedException();
+            Stream wStream;
+
+            using (var client = new HttpClient())
+            {
+                using (var result = client.GetAsync(string.Format(_options.UrlDownload, fileId)))
+                {
+                    result.Wait();
+
+                    var content = result.Result.Content.ReadAsStreamAsync();
+
+                    content.Wait();
+
+                    wStream = content.Result;
+                    wStream.Position = 0;
+                }
+            }
+
+            return wStream;
         }
     }
 }

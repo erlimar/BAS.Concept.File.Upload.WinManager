@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnListarArquivos = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.FileId = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -44,6 +44,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.btnEnviarArquivo = new System.Windows.Forms.Button();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.btnDownload = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -82,7 +85,7 @@
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.ShowEditingIcon = false;
-            this.dataGridView1.Size = new System.Drawing.Size(513, 219);
+            this.dataGridView1.Size = new System.Drawing.Size(513, 203);
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
@@ -97,8 +100,8 @@
             // FileName
             // 
             this.FileName.DataPropertyName = "Name";
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.FileName.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.FileName.DefaultCellStyle = dataGridViewCellStyle13;
             this.FileName.HeaderText = "Nome do arquivo";
             this.FileName.Name = "FileName";
             this.FileName.ReadOnly = true;
@@ -107,22 +110,23 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnDownload);
             this.groupBox1.Controls.Add(this.lblFileDetailMime);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.lblFileDetailName);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.lblFileDetailId);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(38, 307);
+            this.groupBox1.Location = new System.Drawing.Point(38, 292);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(513, 126);
+            this.groupBox1.Size = new System.Drawing.Size(513, 127);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Detalhes do item selecionado";
             // 
             // lblFileDetailMime
             // 
-            this.lblFileDetailMime.Location = new System.Drawing.Point(89, 90);
+            this.lblFileDetailMime.Location = new System.Drawing.Point(89, 91);
             this.lblFileDetailMime.Name = "lblFileDetailMime";
             this.lblFileDetailMime.Size = new System.Drawing.Size(400, 23);
             this.lblFileDetailMime.TabIndex = 5;
@@ -132,7 +136,7 @@
             // label5
             // 
             this.label5.BackColor = System.Drawing.SystemColors.Control;
-            this.label5.Location = new System.Drawing.Point(6, 90);
+            this.label5.Location = new System.Drawing.Point(6, 91);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(77, 23);
             this.label5.TabIndex = 4;
@@ -141,7 +145,7 @@
             // 
             // lblFileDetailName
             // 
-            this.lblFileDetailName.Location = new System.Drawing.Point(89, 61);
+            this.lblFileDetailName.Location = new System.Drawing.Point(89, 62);
             this.lblFileDetailName.Name = "lblFileDetailName";
             this.lblFileDetailName.Size = new System.Drawing.Size(400, 23);
             this.lblFileDetailName.TabIndex = 3;
@@ -151,7 +155,7 @@
             // label3
             // 
             this.label3.BackColor = System.Drawing.SystemColors.Control;
-            this.label3.Location = new System.Drawing.Point(6, 61);
+            this.label3.Location = new System.Drawing.Point(6, 62);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 23);
             this.label3.TabIndex = 2;
@@ -160,7 +164,7 @@
             // 
             // lblFileDetailId
             // 
-            this.lblFileDetailId.Location = new System.Drawing.Point(89, 32);
+            this.lblFileDetailId.Location = new System.Drawing.Point(89, 33);
             this.lblFileDetailId.Name = "lblFileDetailId";
             this.lblFileDetailId.Size = new System.Drawing.Size(400, 23);
             this.lblFileDetailId.TabIndex = 1;
@@ -170,7 +174,7 @@
             // label1
             // 
             this.label1.BackColor = System.Drawing.SystemColors.Control;
-            this.label1.Location = new System.Drawing.Point(6, 32);
+            this.label1.Location = new System.Drawing.Point(6, 33);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(77, 23);
             this.label1.TabIndex = 0;
@@ -193,11 +197,35 @@
             this.btnEnviarArquivo.UseVisualStyleBackColor = true;
             this.btnEnviarArquivo.Click += new System.EventHandler(this.btnEnviarArquivo_Click);
             // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.CheckPathExists = false;
+            // 
+            // btnDownload
+            // 
+            this.btnDownload.Location = new System.Drawing.Point(334, 0);
+            this.btnDownload.Name = "btnDownload";
+            this.btnDownload.Size = new System.Drawing.Size(173, 23);
+            this.btnDownload.TabIndex = 7;
+            this.btnDownload.Text = "Salvar arquivo no computador";
+            this.btnDownload.UseVisualStyleBackColor = true;
+            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(-3, 0);
+            this.progressBar1.MarqueeAnimationSpeed = 10;
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(594, 2);
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.progressBar1.TabIndex = 4;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(589, 445);
+            this.ClientSize = new System.Drawing.Size(589, 436);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.btnEnviarArquivo);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dataGridView1);
@@ -232,6 +260,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn FileName;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button btnEnviarArquivo;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.Button btnDownload;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 
