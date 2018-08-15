@@ -29,9 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnListarArquivos = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.FileId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblFileDetailMime = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -39,12 +42,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.lblFileDetailId = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.FileId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.btnEnviarArquivo = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnListarArquivos
@@ -83,6 +85,25 @@
             this.dataGridView1.Size = new System.Drawing.Size(513, 219);
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
+            // 
+            // FileId
+            // 
+            this.FileId.DataPropertyName = "Id";
+            this.FileId.HeaderText = "FileId";
+            this.FileId.Name = "FileId";
+            this.FileId.ReadOnly = true;
+            this.FileId.Visible = false;
+            // 
+            // FileName
+            // 
+            this.FileName.DataPropertyName = "Name";
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.FileName.DefaultCellStyle = dataGridViewCellStyle3;
+            this.FileName.HeaderText = "Nome do arquivo";
+            this.FileName.Name = "FileName";
+            this.FileName.ReadOnly = true;
+            this.FileName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.FileName.Width = 490;
             // 
             // groupBox1
             // 
@@ -156,30 +177,28 @@
             this.label1.Text = "Id:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // FileId
+            // openFileDialog1
             // 
-            this.FileId.DataPropertyName = "Id";
-            this.FileId.HeaderText = "FileId";
-            this.FileId.Name = "FileId";
-            this.FileId.ReadOnly = true;
-            this.FileId.Visible = false;
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "Todos os arquivos (*.*)|*.*";
+            this.openFileDialog1.Title = "Selecione um arquivo";
             // 
-            // FileName
+            // btnEnviarArquivo
             // 
-            this.FileName.DataPropertyName = "Name";
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.FileName.DefaultCellStyle = dataGridViewCellStyle1;
-            this.FileName.HeaderText = "Nome do arquivo";
-            this.FileName.Name = "FileName";
-            this.FileName.ReadOnly = true;
-            this.FileName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.FileName.Width = 490;
+            this.btnEnviarArquivo.Location = new System.Drawing.Point(396, 23);
+            this.btnEnviarArquivo.Name = "btnEnviarArquivo";
+            this.btnEnviarArquivo.Size = new System.Drawing.Size(155, 23);
+            this.btnEnviarArquivo.TabIndex = 3;
+            this.btnEnviarArquivo.Text = "Enviar arquivo";
+            this.btnEnviarArquivo.UseVisualStyleBackColor = true;
+            this.btnEnviarArquivo.Click += new System.EventHandler(this.btnEnviarArquivo_Click);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(589, 445);
+            this.Controls.Add(this.btnEnviarArquivo);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnListarArquivos);
@@ -191,8 +210,8 @@
             this.Text = "Prova de conceito para API de upload de arquivos para BAS (Win32 Client)";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -211,6 +230,8 @@
         private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.DataGridViewTextBoxColumn FileId;
         private System.Windows.Forms.DataGridViewTextBoxColumn FileName;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button btnEnviarArquivo;
     }
 }
 

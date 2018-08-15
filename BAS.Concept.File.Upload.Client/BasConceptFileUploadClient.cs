@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace BAS.Concept.File.Upload.Client
 {
@@ -20,10 +21,41 @@ namespace BAS.Concept.File.Upload.Client
             _options = options;
         }
 
-        public WebResponse<T> SendFile<T>(Stream fileStream, string fileName)
-            where T : class
+        public WebResponse<WebFileInfo> SendFile(Stream fileStream, string fileName)
         {
-            throw new NotImplementedException();
+            var response = new WebResponse<WebFileInfo>();
+
+            using (var client = new HttpClient())
+            using (var fsr = new BinaryReader(fileStream))
+            {
+                fileStream.Position = 0;
+
+                var form = new MultipartFormDataContent();
+                var fileContent = new ByteArrayContent(fsr.ReadBytes((int)fileStream.Length));
+                fileContent.Headers.ContentType = 
+                    MediaTypeHeaderValue.Parse(ContentTypeMap.ComputeMimeType(fileName));
+
+                form.Add(fileContent, "file", fileName);
+
+                using (var result = client.PostAsync(_options.UrlUpload, form))
+                {
+                    result.Wait();
+
+                    response.StatusCode = (int)result.Result.StatusCode;
+                    response.StatusText = result.Result.StatusCode.ToString();
+
+                    var content = result.Result.Content.ReadAsStringAsync();
+
+                    content.Wait();
+
+                    var resultList = JsonConvert.DeserializeObject<WebFileInfo[]>(content.Result);
+
+                    response.Data = resultList[0];
+                    response.Data.MimeType = fileContent.Headers.ContentType.MediaType;
+                }
+            }
+
+            return response;
         }
 
         public WebResponse<IEnumerable<WebFileInfo>> GetAllFiles()

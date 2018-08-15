@@ -8,13 +8,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BAS.Concept.File.Upload.Client;
+using System.IO;
 
 namespace BAS.Concept.File.Upload.Win32Manager
 {
     public partial class FormMain : Form
     {
+        private readonly BasConceptFileUploadClient _client;
+
         public FormMain()
         {
+            _client = new BasConceptFileUploadClient(new ClientOptions
+            {
+                Url = "http://localhost:3000"
+            });
+
             InitializeComponent();
         }
 
@@ -42,7 +50,7 @@ namespace BAS.Concept.File.Upload.Win32Manager
             {
                 HabilitaDesabilitaTela(false);
 
-                var response = new BasConceptFileUploadClient().GetAllFiles();
+                var response = _client.GetAllFiles();
 
                 bindingSource1.Clear();
 
@@ -79,7 +87,7 @@ namespace BAS.Concept.File.Upload.Win32Manager
 
                 var fileId = dataGridView1.SelectedCells[0].Value.ToString();
 
-                var response = new BasConceptFileUploadClient().GetFileInfo(fileId);
+                var response = _client.GetFileInfo(fileId);
 
                 lblFileDetailId.Text = response.Data.Id;
                 lblFileDetailName.Text = response.Data.Name;
@@ -96,6 +104,29 @@ namespace BAS.Concept.File.Upload.Win32Manager
             finally
             {
                 HabilitaDesabilitaTela();
+            }
+        }
+
+        private void btnEnviarArquivo_Click(object sender, EventArgs e)
+        {
+            EnviarArquivo();
+        }
+
+        private void EnviarArquivo()
+        {
+            var dResult = openFileDialog1.ShowDialog(this);
+
+            if (dResult == DialogResult.OK)
+            {
+                var filePath = openFileDialog1.FileName;
+                var fileName = Path.GetFileName(filePath);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Open))
+                {
+                    var webResult = _client.SendFile(fileStream, fileName);
+                }
+
+                Atualizalista();
             }
         }
     }

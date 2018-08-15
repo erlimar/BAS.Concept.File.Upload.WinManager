@@ -1,0 +1,79 @@
+﻿﻿<#@ template debug="false" hostspecific="false" language="C#" #><#@ assembly name="System.Core" #><#@ import namespace="System.IO" #><#@ import namespace="System.Linq" #><#@ import namespace="System.Text" #><#@ import namespace="System.Net" #><#@ import namespace="System.Collections.Generic" #><#@ import namespace="System.Text.RegularExpressions" #><#@ output extension=".cs" #><# 
+    string APACHE_MIMETYPES_URL = "http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types";
+    var _apacheMimeTypes = GetApacheMimeTypesFromUrl(APACHE_MIMETYPES_URL);
+#>using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+namespace BAS.Concept.File.Upload.Client
+{
+    // WARNING: Essa classe foi gerada automaticamente por um template T4. NÃO modifique manualmente.
+    public class ContentTypeMap
+    {
+        private const string DEFAULT_MIMETYPE = "application/unknown";
+
+        private static Lazy<Dictionary<string, string[]>> _mimeTypes = new Lazy<Dictionary<string, string[]>>(
+            () => new Dictionary<string, string[]>
+            {
+                // A lista a baixo foi gerada com base na publicação de MIME Types da Apache
+                // <#= APACHE_MIMETYPES_URL #>
+<# foreach (var mime in _apacheMimeTypes) { #>
+				{ "<#= mime.Key #>", new []{ "<#= mime.Value #>" } },<# } #>
+            });
+
+        public static string ComputeMimeType(string fileName)
+        {
+            var ext = ExtractExtension(fileName);
+            var mime = _mimeTypes.Value.SingleOrDefault(m => m.Value.Contains(ext));
+            
+            return mime.Key == null ? DEFAULT_MIMETYPE : mime.Key;
+        }
+
+        public static string ExtractExtension(string fileName)
+        {
+            string ext = Path.GetExtension(fileName)?.Trim();
+
+            if (string.IsNullOrEmpty(ext))
+            {
+                return string.Empty;
+            }
+
+            return ext.Substring(1).ToLower();
+        }
+    }
+}
+<#+
+    private static Dictionary<string, string> GetApacheMimeTypesFromUrl(string url)
+    {
+        var mimeTypes = new Dictionary<string, string>();
+
+        using (var wc = new WebClient())
+        {
+            var mimeTypesText = wc.DownloadString(new Uri(url));
+            using (var reader = new StringReader(mimeTypesText))
+            {
+                string mimeLine = reader.ReadLine();
+
+                while (mimeLine != null)
+                {
+                    mimeLine = mimeLine.Trim();
+
+                    if(mimeLine.ElementAt(0) != '#')
+                    {
+                        string[] splitted = Regex.Split(mimeLine, "\\s+");
+
+                        if(splitted.Length > 1 && !mimeTypes.ContainsKey(splitted[0]))
+                        {
+                            mimeTypes.Add(splitted[0], string.Join("\", \"", splitted.Skip(1)));
+                        }
+                    }
+
+                    mimeLine = reader.ReadLine();
+                }
+            }
+        }
+
+        return mimeTypes;
+    }
+#>
