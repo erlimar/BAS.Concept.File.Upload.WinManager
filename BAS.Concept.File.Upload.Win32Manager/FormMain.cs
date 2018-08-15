@@ -18,10 +18,14 @@ namespace BAS.Concept.File.Upload.Win32Manager
 
         public FormMain()
         {
-            _client = new BasConceptFileUploadClient(new ClientOptions
-            {
-                Url = "http://localhost:3000"
-            });
+            _client = new BasConceptFileUploadClient(
+#if DEBUG
+                new ClientOptions
+                {
+                    Url = "http://localhost:3000"
+                }
+#endif
+            );
 
             InitializeComponent();
         }
