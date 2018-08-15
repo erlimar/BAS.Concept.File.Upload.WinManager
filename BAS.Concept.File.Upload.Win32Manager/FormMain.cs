@@ -39,6 +39,7 @@ namespace BAS.Concept.File.Upload.Win32Manager
 
         private void HabilitaDesabilitaTela(bool habilita = true)
         {
+            btnEnviarArquivo.Enabled = habilita;
             btnListarArquivos.Enabled = habilita;
             dataGridView1.Enabled = habilita;
             groupBox1.Enabled = habilita;
@@ -118,19 +119,32 @@ namespace BAS.Concept.File.Upload.Win32Manager
 
         private void EnviarArquivo()
         {
-            var dResult = openFileDialog1.ShowDialog(this);
-
-            if (dResult == DialogResult.OK)
+            try
             {
-                var filePath = openFileDialog1.FileName;
-                var fileName = Path.GetFileName(filePath);
+                HabilitaDesabilitaTela(false);
 
-                using (var fileStream = new FileStream(filePath, FileMode.Open))
+                var dResult = openFileDialog1.ShowDialog(this);
+
+                if (dResult == DialogResult.OK)
                 {
-                    var webResult = _client.SendFile(fileStream, fileName);
-                }
+                    var filePath = openFileDialog1.FileName;
+                    var fileName = Path.GetFileName(filePath);
 
-                Atualizalista();
+                    using (var fileStream = new FileStream(filePath, FileMode.Open))
+                    {
+                        var webResult = _client.SendFile(fileStream, fileName);
+                    }
+
+                    Atualizalista();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                HabilitaDesabilitaTela();
             }
         }
     }
