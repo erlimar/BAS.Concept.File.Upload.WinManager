@@ -2,6 +2,8 @@
 
 Prova de conceito para API de upload de arquivos para BAS (Win32 Client)
 
+![Screenshot](screenshot.png)
+
 ## Adicionando a biblioteca em sua aplicação
 
 ```shell
